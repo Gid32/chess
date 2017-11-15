@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>DefaultWindow.qml</file>
+        <file>PlayedGameWindow.qml</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file alias="blackBishop">images/black_bishop.svg</file>
+        <file alias="blackKing">images/black_king.svg</file>
+        <file alias="blackKnight">images/black_knight.svg</file>
+        <file alias="blackPawn">images/black_pawn.svg</file>
+        <file alias="blackQueen">images/black_queen.svg</file>
+        <file alias="blackRook">images/black_rook.svg</file>
+        <file alias="board">images/chess_board.svg</file>
+        <file alias="whiteBishop">images/white_bishop.svg</file>
+        <file alias="whiteKing">images/white_king.svg</file>
+        <file alias="whiteKnight">images/white_knight.svg</file>
+        <file alias="whitePawn">images/white_pawn.svg</file>
+        <file alias="whiteQueen">images/white_queen.svg</file>
+        <file alias="whiteRook">images/white_rook.svg</file>
+        <file alias="turn">images/turn.png</file>
+    </qresource>
+</RCC>
