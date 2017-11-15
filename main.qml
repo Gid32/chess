@@ -48,8 +48,8 @@ ApplicationWindow {
             Repeater {
                 model: fig.listPosibleTurns
                 delegate: Image{
-                    x: getCoordTurnX(modelData.x) - img.x
-                    y: getCoordTurnY(modelData.y) - img.y
+                    x: getCoordX(modelData.x) - img.x
+                    y: getCoordY(modelData.y) - img.y
                     source: "qrc:/image/turn"
                     visible: img.vis
                     MouseArea {
@@ -144,14 +144,6 @@ ApplicationWindow {
 
     function getCoordY(y) {
         return y*(areaBoard/8);//+4;
-    }
-
-    function getCoordTurnX(x) {
-        return x*(areaBoard/8);//-4;
-    }
-
-    function getCoordTurnY(y) {
-        return y*(areaBoard/8);//-4;
     }
 
 }
