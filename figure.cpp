@@ -30,10 +30,11 @@ Figure::~Figure()
    _board[_coord.x()][_coord.y()] = false;
 }
 
-Figure::Figure(QPoint coords, FigureType figureType)
+Figure::Figure(QPoint coords, FigureType figureType, FigureColor figureColor)
 {
     _coord = coords;
     _figureType = figureType;
+    _figureColor = figureColor;
     qDebug()<<_coord.x()<<_coord.y()<<_board[_coord.x()][_coord.y()];
     _board[_coord.x()][_coord.y()] = true;
     qDebug()<<_coord.x()<<_coord.y()<<_board[_coord.x()][_coord.y()];
@@ -57,6 +58,11 @@ void Figure::setCoords(QPoint coord)
 int Figure::figureType() const
 {
     return _figureType;
+}
+
+int Figure::figureColor() const
+{
+    return _figureColor;
 }
 
 void Figure::setFigureType(int figureType)

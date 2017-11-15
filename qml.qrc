@@ -6,19 +6,21 @@
         <file>PlayedGameWindow.qml</file>
     </qresource>
     <qresource prefix="/image">
-        <file alias="blackBishop">images/black_bishop.svg</file>
-        <file alias="blackKing">images/black_king.svg</file>
-        <file alias="blackKnight">images/black_knight.svg</file>
-        <file alias="blackPawn">images/black_pawn.svg</file>
-        <file alias="blackQueen">images/black_queen.svg</file>
-        <file alias="blackRook">images/black_rook.svg</file>
         <file alias="board">images/chess_board.svg</file>
-        <file alias="whiteBishop">images/white_bishop.svg</file>
-        <file alias="whiteKing">images/white_king.svg</file>
-        <file alias="whiteKnight">images/white_knight.svg</file>
-        <file alias="whitePawn">images/white_pawn.svg</file>
-        <file alias="whiteQueen">images/white_queen.svg</file>
-        <file alias="whiteRook">images/white_rook.svg</file>
         <file alias="turn">images/turn.png</file>
+
+        <file alias="PawnBlack">images/black_pawn.svg</file>
+        <file alias="RookBlack">images/black_rook.svg</file>
+        <file alias="KnightBlack">images/black_knight.svg</file>
+        <file alias="BishopBlack">images/black_bishop.svg</file>
+        <file alias="QueenBlack">images/black_queen.svg</file>
+        <file alias="KingBlack">images/black_king.svg</file>
+
+        <file alias="PawnWhite">images/white_pawn.svg</file>
+        <file alias="RookWhite">images/white_rook.svg</file>
+        <file alias="KnightWhite">images/white_knight.svg</file>
+        <file alias="BishopWhite">images/white_bishop.svg</file>
+        <file alias="QueenWhite">images/white_queen.svg</file>
+        <file alias="KingWhite">images/white_king.svg</file>
     </qresource>
 </RCC>

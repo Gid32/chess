@@ -28,9 +28,9 @@ ApplicationWindow {
         Image {
             property bool vis: false
             id: img
-            source: getImageByType(model.figureType)
-            width: 50
-            height: 50
+            source: getImageByType(model.figureType,model.figureColor)
+            width: 64
+            height: 64
             x: getCoordX(model.coords.x)
             y: getCoordY(model.coords.y)
             MouseArea {
@@ -40,7 +40,7 @@ ApplicationWindow {
                         mainItem.clickFigure.vis = false;
                     mainItem.clickFigure = img;
                     vis = true;
-                    model.coords.x = 1;
+                    //model.coords.x = 1;
                 }
             }
             property var testM: model.listPosibleTurns
@@ -114,51 +114,44 @@ ApplicationWindow {
     }
 
 
-    function getImageByType(type) {
+    function getImageByType(type,color) {
+        var ret = " ";
+
+        if (color === Figure.Black) ret = "Black";
+        else ret = "White";
+
         switch(type) {
-        case Figure.BlackBishop:
-            return "qrc:/image/blackBishop";
-        case Figure.WhiteBishop:
-            return "qrc:/image/whiteBishop";
-        case Figure.BlackPawn:
-            return "qrc:/image/blackPawn";
-        case Figure.WhitePawn:
-            return "qrc:/image/whitePawn";
-        case Figure.BlackKing:
-            return "qrc:/image/blackKing";
-        case Figure.WhiteKing:
-            return "qrc:/image/whiteKing";
-        case Figure.BlackKnight:
-            return "qrc:/image/blackKnight";
-        case Figure.WhiteKnight:
-            return "qrc:/image/whiteKnight";
-        case Figure.BlackQueen:
-            return "qrc:/image/blackQueen";
-        case Figure.WhiteQueen:
-            return "qrc:/image/whiteQueen";
-        case Figure.BlackRook:
-            return "qrc:/image/blackRook";
-        case Figure.WhiteRook:
-            return "qrc:/image/whiteRook";
+        case Figure.Pawn:
+            return "qrc:/image/Pawn" + ret;
+        case Figure.Rook:
+            return  "qrc:/image/Rook" + ret;
+        case Figure.Knight:
+            return  "qrc:/image/Knight" + ret;
+        case Figure.Bishop:
+            return  "qrc:/image/Bishop" + ret;
+        case Figure.Queen:
+            return  "qrc:/image/Queen" + ret;
+        case Figure.King:
+            return  "qrc:/image/King" + ret;
         default:
-            return "qrc:/image/blackBishop";
+            return  "qrc:/image/Pawn" + ret;
         }
     }
 
     function getCoordX(x) {
-        return x*(areaBoard/8)+4;
+        return x*(areaBoard/8);//+4;
     }
 
     function getCoordY(y) {
-        return y*(areaBoard/8)+4;
+        return y*(areaBoard/8);//+4;
     }
 
     function getCoordTurnX(x) {
-        return x*(areaBoard/8)-4;
+        return x*(areaBoard/8);//-4;
     }
 
     function getCoordTurnY(y) {
-        return y*(areaBoard/8)-4;
+        return y*(areaBoard/8);//-4;
     }
 
 }

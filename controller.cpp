@@ -14,50 +14,7 @@ Controller::Controller(QQmlContext *context)
 void Controller::startGame()
 {
     qDebug()<<"nahuy";
-    int whitePos = 6, blackPos = 1;
-    for(int i = 0;i<BOARD_LENGTH;i++)
-    {
-        Figure *figure = new Figure(QPoint(i,blackPos), Figure::BlackPawn);
-        _model->add(figure);
-        figure = new Figure(QPoint(i,whitePos), Figure::WhitePawn);
-        _model->add(figure);
-    }
-
-    whitePos = 7, blackPos = 0;
-
-    Figure *figure = new Figure(QPoint(0,blackPos), Figure::BlackRook);
-    _model->add(figure);
-    figure = new Figure(QPoint(1,blackPos), Figure::BlackBishop);
-    _model->add(figure);
-    figure = new Figure(QPoint(2,blackPos), Figure::BlackKnight);
-    _model->add(figure);
-    figure = new Figure(QPoint(3,blackPos), Figure::BlackKing);
-    _model->add(figure);
-    figure = new Figure(QPoint(4,blackPos), Figure::BlackQueen);
-    _model->add(figure);
-    figure = new Figure(QPoint(5,blackPos), Figure::BlackKnight);
-    _model->add(figure);
-    figure = new Figure(QPoint(6,blackPos), Figure::BlackBishop);
-    _model->add(figure);
-    figure = new Figure(QPoint(7,blackPos), Figure::BlackRook);
-    _model->add(figure);
-
-    figure = new Figure(QPoint(0,whitePos), Figure::WhiteRook);
-    _model->add(figure);
-    figure = new Figure(QPoint(1,whitePos), Figure::WhiteBishop);
-    _model->add(figure);
-    figure = new Figure(QPoint(2,whitePos), Figure::WhiteKnight);
-    _model->add(figure);
-    figure = new Figure(QPoint(3,whitePos), Figure::WhiteKing);
-    _model->add(figure);
-    figure = new Figure(QPoint(4,whitePos), Figure::WhiteQueen);
-    _model->add(figure);
-    figure = new Figure(QPoint(5,whitePos), Figure::WhiteKnight);
-    _model->add(figure);
-    figure = new Figure(QPoint(6,whitePos), Figure::WhiteBishop);
-    _model->add(figure);
-    figure = new Figure(QPoint(7,whitePos), Figure::WhiteRook);
-    _model->add(figure);
+    placeFigures();
     emit loadPlayedGameWindow();
 }
 
@@ -66,6 +23,34 @@ void Controller::leaveGame()
     qDebug()<<"leave";
     _model->clear();
     emit loadDefaultWindow();
+}
+
+void Controller::placeFiguresPair(Figure::FigureType figureType, int Column)
+{
+    int Row = 0;
+    if(figureType == Figure::FigureType::Pawn)
+        Row = 1;
+    _model->add(new Figure(QPoint(Column,(BOARD_LENGTH-1)-Row), figureType, Figure::FigureColor::White));
+    _model->add(new Figure(QPoint(Column,Row), figureType, Figure::FigureColor::Black));
+}
+
+void Controller::placeFigures()
+{
+    for(int i = 0;i<BOARD_LENGTH;i++)
+    {
+        placeFiguresPair(Figure::FigureType::Pawn, i);
+    }
+
+    placeFiguresPair(Figure::FigureType::Rook, 0);
+    placeFiguresPair(Figure::FigureType::Knight, 1);
+    placeFiguresPair(Figure::FigureType::Bishop, 2);
+    placeFiguresPair(Figure::FigureType::Queen, 3);
+    placeFiguresPair(Figure::FigureType::King, 4);
+    placeFiguresPair(Figure::FigureType::Bishop, 5);
+    placeFiguresPair(Figure::FigureType::Knight, 6);
+    placeFiguresPair(Figure::FigureType::Rook, 7);
+
+    emit loadPlayedGameWindow();
 }
 
 void Controller::initConnection(QObject *qml)

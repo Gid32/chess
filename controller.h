@@ -21,8 +21,10 @@ public slots:
     void startGame();
     void leaveGame();
 private:
+    void placeFigures();
     ChessModel *_model;
     QObject *_qml;
+    void placeFiguresPair(Figure::FigureType figureType, int Column);
 };
 
 #endif // CONTROLLER_H
