@@ -1,7 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 import cpp 1.0
 
 
@@ -27,31 +26,38 @@ ApplicationWindow {
     Component {
         id: figureDelegate
         Image {
+            property bool vis: false
+            id: img
             source: getImageByType(model.figureType,model.figureColor)
-            width: 64; height: 64
-            x: getCoordX(model.coords.x); y: getCoordY(model.coords.y)
-            //transform: Rotation { origin.x: 64/2; origin.y: 64/2; angle: 180}
+            width: 64
+            height: 64
+            x: getCoordX(model.coords.x)
+            y: getCoordY(model.coords.y)
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if(model.figureColor != chessModel.player)
-                        return;
-                    chessModel.figure = chessModel.getFigureFromPoint(model.coords);
-                    console.log(chessModel.turns);
+                    if(mainItem.clickFigure)
+                        mainItem.clickFigure.vis = false;
+                    mainItem.clickFigure = img;
+                    vis = true;
+                    //model.coords.x = 1;
                 }
             }
-        }
-    }
-
-    Component {
-        id: turnDelegate
-        Image {
-            x: getCoordX(modelData.x); y: getCoordY(modelData.y)
-            source: "qrc:/image/turn"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    chessModel.figure.turn = modelData;
+            property var testM: model.listPosibleTurns
+            property var fig: model
+            Repeater {
+                model: fig.listPosibleTurns
+                delegate: Image{
+                    x: getCoordX(modelData.x) - img.x
+                    y: getCoordY(modelData.y) - img.y
+                    source: "qrc:/image/turn"
+                    visible: img.vis
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            fig.coords = modelData;
+                        }
+                    }
                 }
             }
         }
@@ -62,27 +68,18 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 5
         id: mainItem
-
+        property var clickFigure
 
         Image {
             id: board
             source: "qrc:/image/board"
             width: areaBoard; height: areaBoard;
-            //transform: Rotation { origin.x: areaBoard/2; origin.y: areaBoard/2; angle: 180}
 
             Repeater {
-                id: test
                 model: chessModel.data
                 delegate: figureDelegate
             }
-
-            Repeater {
-                id: turns
-                model: chessModel.turns
-                delegate: turnDelegate
-            }
         }
-
 
         StackView {
             id: stackView
@@ -103,12 +100,13 @@ ApplicationWindow {
 
     signal startGame()
     signal loadGame()
+    signal saveGame()
     signal leaveGame()
-
 
     function loadPlayedGameWindow() {
         stackView.clear();
         stackView.push(playedGameWindow);
+        
     }
 
     function loadDefaultWindow() {
@@ -119,10 +117,9 @@ ApplicationWindow {
 
     function getImageByType(type,color) {
         var ret = " ";
-        if (color === Figure.Black)
-            ret = "Black";
-        else
-            ret = "White";
+
+        if (color === Figure.Black) ret = "Black";
+        else ret = "White";
 
         switch(type) {
         case Figure.Pawn:

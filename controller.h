@@ -7,6 +7,12 @@
 #include <QQmlContext>
 #include "chessmodel.h"
 #include "figure.h"
+#include "pawn.h"
+#include "bishop.h"
+#include "king.h"
+#include "knight.h"
+#include "queen.h"
+#include "rook.h"
 
 class Controller : public QObject
 {
@@ -21,10 +27,8 @@ public slots:
     void startGame();
     void leaveGame();
 private:
-    void placeFigures();
     ChessModel *_model;
     QObject *_qml;
-    void placeFiguresPair(Figure::FigureType figureType, int Column);
 };
 
 #endif // CONTROLLER_H

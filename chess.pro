@@ -7,6 +7,8 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+INCLUDEPATH += figures/
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -15,7 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     controller.cpp \
     figure.cpp \
-    chessmodel.cpp
+    chessmodel.cpp \
+    figures/pawn.cpp \
+    figures/bishop.cpp \
+    figures/king.cpp \
+    figures/knight.cpp \
+    figures/queen.cpp \
+    figures/rook.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,4 +41,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     controller.h \
     figure.h \
-    chessmodel.h
+    chessmodel.h \
+    figures/pawn.h \
+    figures/bishop.h \
+    figures/king.h \
+    figures/knight.h \
+    figures/queen.h \
+    figures/rook.h

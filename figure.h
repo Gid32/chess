@@ -12,8 +12,6 @@
 
 const int BOARD_LENGTH = 8;
 
-//Q_DECLARE_TYPE(Points);
-
 
 class Figure : public QObject
 {
@@ -21,10 +19,8 @@ class Figure : public QObject
     Q_PROPERTY(QPoint coords READ coords WRITE setCoords NOTIFY coordsChanged)
     Q_PROPERTY(int figureType READ figureType WRITE setFigureType NOTIFY figureTypeChanged)
     Q_PROPERTY(int figureColor READ figureColor NOTIFY figureColorChanged)
-    Q_PROPERTY(QStringList getListCanTurn READ getListCanTurn CONSTANT)
-    Q_PROPERTY(QVariantList listPosibleTurns READ listPosibleTurns CONSTANT)
-    //Q_PROPERTY(Points getListCanTurn READ getListCanTurn)
-   // Q_PROPERTY(QQmlListProperty<QList<QPoint>> getListCanTurn READ getListCanTurn )
+    Q_PROPERTY(QVariantList listPosibleTurns READ listPosibleTurns NOTIFY  listPosibleTurnsChanged)
+    Q_PROPERTY(QPoint turn WRITE turn)
     Q_ENUMS(FigureType)
     Q_ENUMS(FigureColor)
 public:
@@ -38,10 +34,12 @@ public:
         King,
     };
     enum FigureColor {
-        White,
-        Black,
+        White = -1,
+        Black = 1,
+        NoColor = 0,
     };
-    Figure(QPoint coords, FigureType figureType, FigureColor figureColor);
+    //Figure(QPoint coords, FigureType figureType, FigureColor figureColor);
+    Figure(QPoint coords, FigureColor figureColor, QObject *parent = 0);
     ~Figure();
 
     QPoint coords() const;
@@ -49,24 +47,25 @@ public:
     int figureType() const;
     int figureColor() const;
     void setFigureType(int figureType);
+    void turn(QPoint point);
 
-    QStringList getListCanTurn() const;
-    QVariantList listPosibleTurns() const;
-
-    Q_INVOKABLE void test();
-
+    virtual QVariantList listPosibleTurns() const ;
+    static FigureColor getBoardValue(QPoint coord);
+    static bool checkCoordLegal(QPoint coord);
+    static void debugBoard();
+    static void clearBoard();
 signals:
     void coordsChanged(QPoint coord);
     void figureTypeChanged(int figureType);
     void figureColorChanged(int figureColor);
-private:
-    static bool _board[BOARD_LENGTH][BOARD_LENGTH];
+    void listPosibleTurnsChanged(QVariantList listPosibleTurns);
+    void wantTurn(Figure*,QPoint);
+protected:
+    static FigureColor _board[BOARD_LENGTH][BOARD_LENGTH];
     QPoint _coord;
     int _figureType;
     int _figureColor;
-
-
-    //Points getListCanTurnPawn();
+    int _countTurns;
 };
 
 #endif // Figure_H

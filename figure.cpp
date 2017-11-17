@@ -1,44 +1,34 @@
 #include "figure.h"
 
-//Points::Points(QObject *parent) :
-//    QObject(parent)
-//{
-
-//}
-
-//Points::Points(const Points&)
-//{
-
-//}
-
-//Points &Points::operator =(const Points&)
-//{
-
-
-//}
-
-
-bool Figure::_board[BOARD_LENGTH][BOARD_LENGTH] = {};
+Figure::FigureColor Figure::_board[BOARD_LENGTH][BOARD_LENGTH] = { Figure::FigureColor::NoColor};
 
 Figure::Figure(QObject *parent) :
     QObject(parent)
 {
 }
 
-Figure::~Figure()
+Figure::Figure(QPoint coords, FigureColor figureColor, QObject *parent) :
+        QObject(parent)
 {
-   _board[_coord.x()][_coord.y()] = false;
+    _figureColor = figureColor;
+    _coord = coords;
+    _board[_coord.x()][_coord.y()] = figureColor;
+    qDebug()<<_coord.x()<<_coord.y()<<figureColor;
+    _countTurns = 0;
 }
 
-Figure::Figure(QPoint coords, FigureType figureType, FigureColor figureColor)
+Figure::~Figure()
 {
-    _coord = coords;
-    _figureType = figureType;
-    _figureColor = figureColor;
-    qDebug()<<_coord.x()<<_coord.y()<<_board[_coord.x()][_coord.y()];
-    _board[_coord.x()][_coord.y()] = true;
-    qDebug()<<_coord.x()<<_coord.y()<<_board[_coord.x()][_coord.y()];
+   _board[_coord.x()][_coord.y()] = NoColor;
 }
+
+//Figure::Figure(QPoint coords, FigureType figureType, FigureColor figureColor)
+//{
+//    _coord = coords;
+//    _figureType = figureType;
+//    _figureColor = figureColor;
+//    _board[_coord.x()][_coord.y()] = true;
+//}
 
 QPoint Figure::coords() const
 {
@@ -49,10 +39,10 @@ void Figure::setCoords(QPoint coord)
 {
     if(coord == _coord)
         return;
-    _board[_coord.x()][_coord.y()] = false;
     _coord = coord;
-    _board[_coord.x()][_coord.y()] = true;
+    _board[coord.x()][coord.y()] = (FigureColor)_figureColor;
     emit coordsChanged(_coord);
+    emit listPosibleTurnsChanged(QVariantList());
 }
 
 int Figure::figureType() const
@@ -73,60 +63,46 @@ void Figure::setFigureType(int figureType)
     emit figureTypeChanged(_figureType);
 }
 
-//Points Figure::getListCanTurn()
-//{
-//    switch(_figureType)
-//    {
-//        case WhitePawn:
-//        case BlackPawn:
-//            return getListCanTurnPawn();
-//    default:
-//        return getListCanTurnPawn();
-//    }
-//}
-
-//Points Figure::getListCanTurnPawn()
-//{
-//    POINTS list;
-//    int startY = _coord.x();
-
-//    for(int i=startY;i<startY+1;i++)
-//    {
-//        if(i >= BOARD_LENGTH || i < 0)
-//            continue;
-//        if(!_board[_coord.x()][i])
-//            list.append(QPoint(_coord.x(),i));
-//    }
-//    qDebug()<<"aaa";
-//    return Points();
-//}
-
-QStringList Figure::getListCanTurn() const
+void Figure::turn(QPoint point)
 {
-    return QStringList() << "orange" << "skyblue";
+    _countTurns++;
+    emit wantTurn(this,point);
 }
 
 QVariantList Figure::listPosibleTurns() const
 {
-    QVariantList list;
-    int startY = _coord.y()+1;
-    if(startY < BOARD_LENGTH && startY >= 0)
-        list.append(QVariant::fromValue(QPoint(_coord.x(),startY)));
-//    for(int i=startY;i<startY+1;i++)
-//    {
-//        if(i >= BOARD_LENGTH || i < 0)
-//            continue;
-//        qDebug()<<"add"<<_coord.x()<<i;
-//        if(!_board[_coord.x()][i])
-//            list.append(QVariant::fromValue(QPoint(_coord.x(),i)));
-//    }
-    //qDebug()<<"aaa";
-    return list;
+    return QVariantList();
 }
 
-void Figure::test()
+Figure::FigureColor Figure::getBoardValue(QPoint coord)
 {
-    qDebug()<<"aaaa";
+    return _board[coord.x()][coord.y()];
+}
+
+bool Figure::checkCoordLegal(QPoint coord)
+{
+    if(coord.y() < BOARD_LENGTH && coord.y() >= 0 && coord.x() < BOARD_LENGTH && coord.x() >= 0)
+        return true;
+    return false;
+}
+
+void Figure::debugBoard()
+{
+
+    for(int i=0;i<BOARD_LENGTH;i++)
+    {
+        QString str = "";
+        for(int j=0;j<BOARD_LENGTH;j++)
+            str+=QString::number(_board[j][i])+" ";
+        qDebug()<<str;
+    }
+}
+
+void Figure::clearBoard()
+{
+    for(int i=0;i<BOARD_LENGTH;i++)
+        for(int j=0;j<BOARD_LENGTH;j++)
+            _board[i][j] = NoColor;
 }
 
 
