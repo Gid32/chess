@@ -2,7 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
-import cpp 1.0
+import ChessLib 1.0
 
 
 
@@ -29,12 +29,17 @@ ApplicationWindow {
         Image {
             source: getImageByType(model.figureType,model.figureColor)
             width: 64; height: 64
-            x: getCoordX(model.coords.x); y: getCoordY(model.coords.y)
-            //transform: Rotation { origin.x: 64/2; origin.y: 64/2; angle: 180}
+            x: getPixelCoord(model.coords.x)
+            y: getPixelCoord(model.coords.y)
+
+            transform: Rotation {
+                origin.x: 64/2; origin.y: 64/2;
+                angle: chessModel.player == Figure.Black ? 180 : 0
+            }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if(model.figureColor != chessModel.player)
+                    if(model.figureColor !== chessModel.player)
                         return;
                     chessModel.figure = chessModel.getFigureFromPoint(model.coords);
                     console.log(chessModel.turns);
@@ -46,7 +51,7 @@ ApplicationWindow {
     Component {
         id: turnDelegate
         Image {
-            x: getCoordX(modelData.x); y: getCoordY(modelData.y)
+            x: getPixelCoord(modelData.x); y: getPixelCoord(modelData.y)
             source: "qrc:/image/turn"
             MouseArea {
                 anchors.fill: parent
@@ -68,7 +73,10 @@ ApplicationWindow {
             id: board
             source: "qrc:/image/board"
             width: areaBoard; height: areaBoard;
-            //transform: Rotation { origin.x: areaBoard/2; origin.y: areaBoard/2; angle: 180}
+            transform: Rotation {
+                origin.x: areaBoard/2; origin.y: areaBoard/2;
+                angle: chessModel.player == Figure.Black ? 180 : 0
+            }
 
             Repeater {
                 id: test
@@ -142,12 +150,8 @@ ApplicationWindow {
         }
     }
 
-    function getCoordX(x) {
-        return x*(areaBoard/8);//+4;
-    }
-
-    function getCoordY(y) {
-        return y*(areaBoard/8);//+4;
+    function getPixelCoord(logicCoord) {
+        return logicCoord*(areaBoard/8);
     }
 
 }

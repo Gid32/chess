@@ -10,6 +10,7 @@ class Bishop : public Figure
 public:
     Bishop(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // BISHOP_H

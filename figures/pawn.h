@@ -10,6 +10,15 @@ class Pawn : public Figure
 public:
     Pawn(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // PAWN_H
+
+
+//QVariantList Pawn::listPosibleCaptures() const
+//{
+//    QVariantList list;
+
+//    return list;
+//}

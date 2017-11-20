@@ -10,6 +10,7 @@ class Queen : public Figure
 public:
     Queen(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // QUEEN_H

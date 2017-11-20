@@ -8,11 +8,26 @@ Knight::Knight(QPoint coords, FigureColor figureColor):
 }
 
 
+
 QVariantList Knight::listPosibleTurns() const
 {
     QVariantList list;
-    int startY = _coord.y()-2;
-    if(startY < BOARD_LENGTH && startY >= 0)
-        list.append(QVariant::fromValue(QPoint(_coord.x(),startY)));
+
+    list.append(line(1, 2, 1));
+    list.append(line(1, -2, 1));
+    list.append(line(-1, 2, 1));
+    list.append(line(-1, -2, 1));
+    list.append(line(2, 1, 1));
+    list.append(line(2, -1, 1));
+    list.append(line(-2, 1, 1));
+    list.append(line(-2, -1, 1));
+
+    return list;
+}
+
+QVariantList Knight::listPosibleCaptures() const
+{
+    QVariantList list;
+
     return list;
 }

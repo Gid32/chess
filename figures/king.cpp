@@ -6,11 +6,24 @@ King::King(QPoint coords, FigureColor figureColor):
     _figureType = FigureType::King;
 }
 
+
 QVariantList King::listPosibleTurns() const
 {
     QVariantList list;
-    int startY = _coord.y()-2;
-    if(startY < BOARD_LENGTH && startY >= 0)
-        list.append(QVariant::fromValue(QPoint(_coord.x(),startY)));
+    list.append(line(1, 0, 1));
+    list.append(line(-1, 0, 1));
+    list.append(line(0, 1, 1));
+    list.append(line(0, -1, 1));
+    list.append(line(1, 1, 1));
+    list.append(line(-1, -1, 1));
+    list.append(line(-1, 1, 1));
+    list.append(line(1, -1, 1));
+    return list;
+}
+
+QVariantList King::listPosibleCaptures() const
+{
+    QVariantList list;
+
     return list;
 }

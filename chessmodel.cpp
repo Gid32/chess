@@ -30,9 +30,10 @@ void ChessModel::clear()
         test.append(m_data.at(i));
     m_data.clear();
     emit dataChanged();
+
     qDeleteAll(test);
     setPlayer(Figure::White);
-    setFigure(nullptr);
+    setActiveFigure(nullptr);
     Figure::clearBoard();
     _history.clear();
     emit logChanged(log());
@@ -81,11 +82,11 @@ QObject* ChessModel::figure()
     return _figure;
 }
 
-void ChessModel::setFigure(QObject *figure)
+void ChessModel::setActiveFigure(QObject *figure)
 {
     if(_figure == figure)
         return;
-    Figure::debugBoard();
+    //Figure::debugBoard();
     _figure = qobject_cast<Figure*>(figure);
     emit figureChanged(_figure);
     emit turnsChanged(turns());
@@ -93,10 +94,9 @@ void ChessModel::setFigure(QObject *figure)
 
 Figure *ChessModel::getFigureFromPoint(QPoint coord)
 {
-    for(int i=0;i<m_data.size();i++)
-        if(m_data.at(i)->coords() == coord)
-            return m_data.at(i);
-    return nullptr;
+    int index = getFigureIndexFromPoint(coord);
+    if (index >= 0) return m_data.at(index);
+    else return nullptr;
 }
 
 QVariantList ChessModel::turns()
@@ -109,7 +109,7 @@ QVariantList ChessModel::turns()
 void ChessModel::start()
 {
     clear();
-    Figure::debugBoard();
+    //Figure::debugBoard();
 
     int row,rowPawn;
     for(int i = -1;i<2;i+=2)
@@ -144,32 +144,49 @@ QStringList ChessModel::log()
     return list;
 }
 
-void ChessModel::flipBoard()
+
+
+
+void ChessModel::captureTryAt(QPoint point)
 {
-    Figure::clearBoard();
-    for(int i=0;i<m_data.size();i++)
-        m_data.at(i)->setCoords(QPoint(m_data.at(i)->coords().x(),7-m_data.at(i)->coords().y()));
+    int target = getFigureIndexFromPoint(point);
+    if (target > -1)
+    {
+        m_data.removeAt(target);
+        emit dataChanged();
+    }
 }
 
 void ChessModel::figureTurn(Figure *figure, QPoint point)
 {
-    qDebug()<<"figure turn";
-
     logAdd(figure->coords(),point);
-    figure->setCoords(point);
-    flipBoard();
+
+    if(Figure::getBoardValue(point) == -figure->figureColor())
+        captureTryAt(point);
+
+    figure->moveToCoords(point);
+
     if(_player == Figure::Black)
         setPlayer(Figure::White);
     else
         setPlayer(Figure::Black);
-    setFigure(nullptr);
+
+    setActiveFigure(nullptr);
 }
 
 void ChessModel::logAdd(QPoint from, QPoint to)
 {
     _history.append(from);
     _history.append(to);
-     emit logChanged(log());
+    emit logChanged(log());
+}
+
+int ChessModel::getFigureIndexFromPoint(QPoint coord)
+{
+    for(int i=0;i<m_data.size();i++)
+        if(m_data.at(i)->coords() == coord)
+            return i;
+    return -1;
 }
 
 void ChessModel::saveLog()
@@ -210,8 +227,10 @@ void ChessModel::loadLog()
     }
 
     start();
-    for(int i=0;i<history.size();i+=2)
+
+    /*for(int i=0;i<history.size();i+=2)
         figureTurn(getFigureFromPoint(history.at(i)),history.at(i+1));
+    */
 }
 
 

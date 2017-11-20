@@ -10,6 +10,7 @@ class Knight : public Figure
 public:
     Knight(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // KNIGHT_H

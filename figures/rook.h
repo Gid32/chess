@@ -10,6 +10,7 @@ class Rook : public Figure
 public:
     Rook(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // ROOK_H

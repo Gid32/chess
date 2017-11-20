@@ -28,7 +28,7 @@ class Rook;
 class ChessModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* figure READ figure WRITE setFigure NOTIFY figureChanged)
+    Q_PROPERTY(QObject* figure READ figure WRITE setActiveFigure NOTIFY figureChanged)
     Q_PROPERTY(QQmlListProperty<Figure> data READ data NOTIFY dataChanged)
     Q_PROPERTY(QVariantList turns READ turns NOTIFY turnsChanged)
     Q_PROPERTY(Figure::FigureColor player READ player WRITE setPlayer NOTIFY playerChanged)
@@ -39,17 +39,20 @@ public:
     QQmlListProperty<Figure> data();
     Q_INVOKABLE void add(Figure *figure);
     void clear();
-    void flipBoard();
     Figure::FigureColor player();
     void setPlayer(Figure::FigureColor player);
     QObject* figure();
-    void setFigure(QObject *figure);
+    void setActiveFigure(QObject *figure);
     QVariantList turns();
     QStringList log();
 
     Q_INVOKABLE Figure *getFigureFromPoint(QPoint coord);
     Q_INVOKABLE void saveLog();
     Q_INVOKABLE void loadLog();
+    void captureAt(int target);
+
+    void captureTryAt(QPoint point);
+
 signals:
     void dataChanged();
     void playerChanged(Figure::FigureColor player);
@@ -66,11 +69,12 @@ private:
     static Figure *atData(QQmlListProperty<Figure> *list, int index);
     static void clearData(QQmlListProperty<Figure> *list);
     void logAdd(QPoint from, QPoint to);
-
+    int getFigureIndexFromPoint(QPoint coord);
     QList<Figure*> m_data;
     Figure::FigureColor _player;
     Figure *_figure;
     QList<QPoint> _history;
+    void captureAt(QPoint point);
 };
 
 

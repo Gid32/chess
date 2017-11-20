@@ -10,9 +10,12 @@ Rook::Rook(QPoint coords, FigureColor figureColor):
 
 QVariantList Rook::listPosibleTurns() const
 {
+    return squareCross();
+}
+
+QVariantList Rook::listPosibleCaptures() const
+{
     QVariantList list;
-    int startY = _coord.y()-2;
-    if(startY < BOARD_LENGTH && startY >= 0)
-        list.append(QVariant::fromValue(QPoint(_coord.x(),startY)));
+
     return list;
 }

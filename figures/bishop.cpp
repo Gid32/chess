@@ -8,10 +8,12 @@ Bishop::Bishop(QPoint coords, FigureColor figureColor):
 
 QVariantList Bishop::listPosibleTurns() const
 {
-    QVariantList list;
-    int startY = _coord.y()-2;
-    if(startY < BOARD_LENGTH && startY >= 0)
-        list.append(QVariant::fromValue(QPoint(_coord.x(),startY)));
-    return list;
+    return diagonalCross();
 }
 
+QVariantList Bishop::listPosibleCaptures() const
+{
+    QVariantList list;
+
+    return list;
+}

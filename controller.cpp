@@ -5,7 +5,7 @@ Controller::Controller(QQmlContext *context)
     _model = new ChessModel();
 
     context->setContextProperty("chessModel", _model);
-    qmlRegisterType<Figure>("cpp", 1, 0, "Figure");
+    qmlRegisterType<Figure>("ChessLib", 1, 0, "Figure");
 }
 
 

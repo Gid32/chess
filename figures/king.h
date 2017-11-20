@@ -10,6 +10,7 @@ class King : public Figure
 public:
     King(QPoint coords, FigureColor figureColor);
     QVariantList listPosibleTurns() const;
+    QVariantList listPosibleCaptures() const;
 };
 
 #endif // KING_H
